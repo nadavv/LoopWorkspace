@@ -99,7 +99,10 @@ jobs:
       - name: Sync upstream changes
         if: | # do not run the upstream sync action on the upstream repository
           steps.workflow-permission.outputs.has_permission == 'true' &&
-          vars.SCHEDULED_SYNC != 'false' && github.repository_owner != 'LoopKit'
+          vars.SCHEDULED_SYNC != 'false' && github.repository_owner != 'LoopKit' &&
+          github.ref_name != 'feature-basal_therapy_history'
+        # The feature branch has no upstream branch of the same name; it is updated by
+        # merging LoopKit/LoopWorkspace main by hand.
         id: sync
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.2
         with:
